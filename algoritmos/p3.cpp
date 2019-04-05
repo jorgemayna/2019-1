@@ -1,14 +1,16 @@
 #include<iostream>
 #include<ctime>
-#include<windows.h>
+#include<unistd.h>
+//#include<windows.h>
 using namespace std;
 #define INF  999999999
 
-double performancecounter_diff(LARGE_INTEGER *a, LARGE_INTEGER *b){
+/*double performancecounter_diff(LARGE_INTEGER *a, LARGE_INTEGER *b){
   LARGE_INTEGER freq;
   QueryPerformanceFrequency(&freq);
   return (double)(a->QuadPart - b->QuadPart) / (double)freq.QuadPart;
 }
+*/
 
 void print_arr(int* _array,int n){
     for(int i=0;i<n;i++){
@@ -67,8 +69,9 @@ int main(){
     int n;
     int * _array;
     int * _array1;
-    LARGE_INTEGER t_ini, t_fin;
-    LARGE_INTEGER t_ini1, t_fin1;
+    unsigned t0,t1;
+    //LARGE_INTEGER t_ini, t_fin;
+    //LARGE_INTEGER t_ini1, t_fin1;
     double secs,secs1;
 
     cout<<"Ingrese tamaño: ";
@@ -77,8 +80,8 @@ int main(){
     _array1 = new int[n];
     cout<<endl;
 
-    int co1=0,co2=0;
-    for(int zz=0;zz<100;zz++){
+    double co1=0,co2=0;
+    for(int zz=0;zz<100000;zz++){
     for(int i=0;i<n;i++){
         _array[i]=n-i;
         _array1[i]=n-i;
@@ -86,15 +89,19 @@ int main(){
     //cout<<"INSERTION SORT:------------------------------"<<endl;
     //print_arr(_array,n);
 
-    QueryPerformanceCounter(&t_ini);
-
+    //QueryPerformanceCounter(&t_ini);
+    t0=clock();
+    usleep(200);
     insertion_sort(_array,n);
-    QueryPerformanceCounter(&t_fin);
+    t1=clock();
+    //QueryPerformanceCounter(&t_fin);
 
     //print_arr(_array,n);
-
-    secs = performancecounter_diff(&t_fin, &t_ini);
-    printf("%.16g millisegundos\n", secs * 1000.0);
+    double time=(double(t1-t0)/CLOCKS_PER_SEC)*1000;
+    //cout<<"Tiempo de ejecucion: "<<time<<endl;
+    co1=co1+time;
+    //secs = performancecounter_diff(&t_fin, &t_ini);
+    //printf("%.16g millisegundos\n", secs * 1000.0);
 
     //cout<<"MERGE SORT:----------------------------------"<<endl;
 
@@ -119,7 +126,7 @@ int main(){
         co2++;
     }*/
     }
-    //cout<<co1<<"   "<<co2<<endl;
+    cout<<"tiempo promedio: "<<co1/100000<<endl;
 
 
 
