@@ -1,0 +1,4 @@
+Howard     Paredes     Zegarra     Computacion   6 
+Penny      Vargas      Cordero     Industrial     2
+Sheldon    Cooper      Quizpe      Mecatronica	  9
+jorge      mayna      flores      cs	12
