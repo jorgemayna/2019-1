@@ -28,5 +28,17 @@ int main(){
         getline(file,a);
 	cout<<a.substr(0,31)<<endl;
 	file.close();
+	
+	file.open("/proc/uptime");
+	file>>a;
+
+	int s,m,h;
+	s=stoi(a);
+	m=s/60;
+	s=s%60;
+	h=m/60;
+	m=m%60;
+	cout<<"La ultima ves que se prendio el equipo fue hace: "<<h<<" horas, "<<m<<" minutos, "<<s<<" segundos"<<endl;
+	
 }
 
