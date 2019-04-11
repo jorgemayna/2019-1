@@ -14,7 +14,7 @@ int binary_search_gg(int* arr,int n,int co){
                 return m;
             }
         }
-    }
+}
 int main(){
     int n,num;
     cin>>n;
