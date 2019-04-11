@@ -10,7 +10,7 @@ void *printHola(void *num_hilo){
 int main(){
 	int i,j,k,rc;
 	long t;
-	pthread_t hilo0,hilo1;
+	pthread_t hilo0,hilo1,hilo2,hilo3;
 	printf("Bienvenidos a hola \n");
 	t=0;
 	rc=pthread_create(&hilo0,NULL,printHola,(void*)t);
@@ -20,6 +20,19 @@ int main(){
 	}
 	t=1;
 	rc=pthread_create(&hilo1,NULL,printHola,(void*)t);
+	if(rc){
+		printf("erroe");
+		exit(-1);
+	}
+
+	t=2;
+	rc=pthread_create(&hilo2,NULL,printHola,(void*)t);
+	if(rc){
+		printf("erroe");
+		exit(-1);
+	}
+	t=3;
+	rc=pthread_create(&hilo3,NULL,printHola,(void*)t);
 	if(rc){
 		printf("erroe");
 		exit(-1);
