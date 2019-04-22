@@ -3,7 +3,7 @@
 #include <time.h>
 #include<pthread.h>
 #include <sys/time.h>
-#define NUM_HILOS 8
+#define NUM_HILOS 14
 
 int** matriz_a;
 int** matriz_b;
