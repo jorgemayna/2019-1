@@ -4,11 +4,13 @@
 #include <assert.h>
 #include<pthread.h>
 
-#define NUM_HILOS 4
+#define NUM_HILOS 8
+//789.716779
+//767.640639
+//775.416633
 
 
-
-#define NSIZE       4
+#define NSIZE       8192
 #define VERIFY      1
 
 #define SWAP(a,b)       {double tmp; tmp = a; a = b; b = tmp;}
@@ -116,15 +118,25 @@ void getPivot(int nsize, int currow)
 		}
 	}
 }
-
+struct datos
+{
+    long thread_id;
+    int pos;
+};
+struct datos hilos_s[NUM_HILOS];
 
 /* For all the rows, get the pivot and eliminate all rows and columns
  * for that particular pivot row. */
-void* row_mod(void* ii){
-    int i=(int)ii;
-    int j,k;
+void* row_mod(void* para){
+    int i,j,k;
+    long id;
     double pivotVal;
-    for (j = i + 1 ; j < NSIZE; j++){
+    struct datos *hdat;
+    hdat=(struct datos*)para;
+    i=hdat->pos;
+    id=hdat->thread_id;
+
+    for (j = i + id+1 ; j < NSIZE; j=j+NUM_HILOS){
         pivotVal = matrix[j][i];
         matrix[j][i] = 0.0;
         for (k = i + 1 ; k < NSIZE; k++){
@@ -137,7 +149,7 @@ void* row_mod(void* ii){
 }
 void computeGauss(int nsize)
 {
-	int i,j,k;
+	int i;
 	double pivotVal;
 	int zz,xx;
 
@@ -145,14 +157,15 @@ void computeGauss(int nsize)
     long id;
 	pthread_t arreglo_hilos[NUM_HILOS];
     pthread_attr_t attr;
-    pthread_attr_init(&attr);
-    pthread_attr_setdetachstate(&attr,PTHREAD_CREATE_JOINABLE);
 
-	printf("Computing and the t is %d \n",*random1);
+	//printf("Computing and the t is %d \n",*random1);
 
 	for(i = 0; i < nsize; i++){
+        if(i%100==0){
+            printf("iteracion %d \n",i);
+        }
 		getPivot(nsize,i);
-
+        /*
 		printf("\n\n ****After getting pivot and beginning interation number: %d \n",i);
 		for (zz=0;zz<nsize;zz++)
 			{
@@ -161,16 +174,22 @@ void computeGauss(int nsize)
 				}
 			printf("\n");
 			}
+        */
 
 
 
 		pivotVal = matrix[i][i];
 
-		for (id=0;id<NUM_HILOS || id<nsize;id++){
-            rc=pthread_create(&arreglo_hilos[id],&attr,matrix_multi,(void*)i);
+        pthread_attr_init(&attr);
+        pthread_attr_setdetachstate(&attr,PTHREAD_CREATE_JOINABLE);
+		for (id=0;id<NUM_HILOS && id<nsize;id++){
+            hilos_s[id].thread_id=id;
+            hilos_s[id].pos=i;
+            rc=pthread_create(&arreglo_hilos[id],&attr,row_mod,(void*)&hilos_s[id]);
             if (rc){printf("ERROR al crear el hilo %ld codigo %d \n",id,rc);
             exit(-1);}
         }
+        pthread_attr_destroy(&attr);
         /*
 		for (j = i + 1 ; j < nsize; j++){
 			pivotVal = matrix[j][i];
@@ -181,8 +200,15 @@ void computeGauss(int nsize)
 			B[j] -= pivotVal * B[i];
 		}
 		*/
+		for (id=0;id<NUM_HILOS && id<nsize;id++){
+            rc=pthread_join(arreglo_hilos[id],NULL);
+            if (rc){
+                printf("ERROR,codigo %d \n",rc);
+                exit(-1);
+            }
+        }
 
-
+        /*
 		printf(" ****After you are done with  interation number: %d \n",i);
 		for (zz=0;zz<nsize;zz++)
 			{
@@ -191,7 +217,7 @@ void computeGauss(int nsize)
 				}
 			printf("\n");
 				}
-
+        */
 	}
 }
 
@@ -257,6 +283,7 @@ int main(int argc,char *argv[])
 	printf("The value input is %d \n",var1);
 	printf("Program begins with Size %d \n",nsize);
 	initMatrix(nsize);
+	/*
 	for (int zz=0;zz<nsize;zz++)
 			{
 			for(int xx=0;xx<nsize;xx++)
@@ -264,6 +291,7 @@ int main(int argc,char *argv[])
 				}
 			printf("\n");
 			}
+    */
 	computeGauss(nsize);
 #if VERIFY
 	solveGauss(nsize);
@@ -277,8 +305,8 @@ int main(int argc,char *argv[])
 	printf("Application time: %f Secs\n",(double)Time/1000000.0);
 
 #if VERIFY
-	for(i = 0; i < nsize; i++)
-		printf("%6.5f %5.5f\n",B[i],C[i]);
+	//for(i = 0; i < nsize; i++)
+		//printf("%6.5f %5.5f\n",B[i],C[i]);
 #endif
 
 	return 0;

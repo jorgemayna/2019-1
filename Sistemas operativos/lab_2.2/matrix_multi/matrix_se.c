@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <sys/time.h>
 
 int** init(int** matriz,int f,int c){
     matriz= (int **)malloc (f*sizeof(int *));
@@ -53,14 +54,34 @@ int main(){
     int** matriz_b;
     matriz_b=init(matriz_b,fb,cb);
     int** matriz_c;
-    matriz_c=multi_s(matriz_a,matriz_b,fa,ca,cb);
 
+    struct timeval start;
+	struct timeval finish;
+	long compTime;
+	double Time=0;
+	for(int i=0;i<20;i++){
+
+
+
+        gettimeofday(&start, 0);
+
+        matriz_c=multi_s(matriz_a,matriz_b,fa,ca,cb);
+
+        gettimeofday(&finish, 0);
+        compTime = (finish.tv_sec - start.tv_sec) * 1000000;
+        compTime = compTime + (finish.tv_usec - start.tv_usec);
+        Time = (double)compTime + Time;
+
+	}
+	Time=Time/20;
+	printf("Application time: %f Secs\n",(double)Time/1000000.0);
+/*
     print_m(matriz_a,fa,ca);
     printf("\n");
     print_m(matriz_b,fb,cb);
     printf("\n");
     print_m(matriz_c,fa,cb);
-
+*/
 
 
 }

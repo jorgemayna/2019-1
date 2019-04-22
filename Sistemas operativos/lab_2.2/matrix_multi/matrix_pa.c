@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include<pthread.h>
-#define NUM_HILOS 4
+#include <sys/time.h>
+#define NUM_HILOS 8
 
 int** matriz_a;
 int** matriz_b;
@@ -84,6 +85,13 @@ int main(){
     matriz_b=init(matriz_b,fb,cb);
 
     matriz_c=init_vacia(matriz_c,fa,cb);
+    struct timeval start;
+	struct timeval finish;
+	long compTime;
+	double Time=0;
+	for(int i=0;i<20;i++){
+
+	gettimeofday(&start, 0);
 
 
     for (id=0;id<NUM_HILOS;id++){
@@ -103,11 +111,18 @@ int main(){
         }
     }
 
-
-
+    gettimeofday(&finish, 0);
+    compTime = (finish.tv_sec - start.tv_sec) * 1000000;
+	compTime = compTime + (finish.tv_usec - start.tv_usec);
+	Time = (double)compTime +Time;
+	}
+	Time=Time/20;
+	printf("Application time: %f Secs\n",(double)Time/1000000.0);
+/*
     print_m(matriz_a,fa,ca);
     printf("\n");
     print_m(matriz_b,fb,cb);
     printf("\n");
     print_m(matriz_c,fa,cb);
+*/
 }
