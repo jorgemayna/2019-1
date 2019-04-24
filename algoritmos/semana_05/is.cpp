@@ -11,9 +11,9 @@ long int cont=0;
 for(int i=0;i<100000;i++){
 	cin>>arr[i];
 }
-timeval start;
-timeval finish;
-long int compTime;
+struct timeval start;
+struct timeval finish;
+long compTime;
 double Time;
 gettimeofday(&start, 0);
 for(int x=0;x<100000;x++){
@@ -32,6 +32,6 @@ compTime = compTime + (finish.tv_usec - start.tv_usec);
 Time = (double)compTime;
 
 cout<<"Numero de swaps: "<<cont<<endl;
-cout<<"TIempo: "<<Time<<endl;
+cout<<"TIempo: "<<(double)Time/1000000<<endl;
 return 0;
 }

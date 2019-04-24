@@ -46,13 +46,14 @@ int main(){
     timeval finish;
     long int compTime;
     double Time;
+    gettimeofday(&start,0);
     flip_sort(arr,0,N-1);
     gettimeofday(&finish, 0);
     compTime = (finish.tv_sec - start.tv_sec) * 1000000;
     compTime = compTime + (finish.tv_usec - start.tv_usec);
     Time = (double)compTime;
     cout<<"Minimum exchange operations : "<<cont<<endl;
-    cout<<"TIempo: "<<Time<<endl;
+    cout<<"TIempo: "<<Time/1000000<<endl;
     cont=0;
     delete [] arr;
 
