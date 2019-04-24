@@ -11,6 +11,7 @@ pthread_mutex_t lock3;
 pthread_mutex_t lock4;
 pthread_mutex_t lock5;
 
+pthread_t arreglo_hilos[NUM_HILOS];
 void* filosofo(void *id){
     long ids=(long)id;
     int mbool=0;
@@ -20,49 +21,59 @@ void* filosofo(void *id){
     while(arr<10){
         a1=0;b1=0;c1=0;d1=0;e1=0;
         if(a==0){
-        if(pthread_mutex_trylock(&lock)==0 && palitos<2){
-            a++;
-            a1++;
-            palitos++;
-            //printf("usando a hilo: %ld   arr: %d \n",ids,arr);
-            pthread_mutex_unlock(&lock);
-        }
+            if(palitos<2){
+                if(pthread_mutex_trylock(&lock)==0){
+                a++;
+                a1++;
+                palitos++;
+                //printf("usando a hilo: %ld   arr: %d \n",ids,arr);
+                pthread_mutex_unlock(&lock);
+                }
+            }
         }
         if(b==0){
-        if(pthread_mutex_trylock(&lock1)==0 && palitos<2){
-            b++;
-            b1++;
-            palitos++;
-            //printf("usando b hilo: %ld   arr: %d \n",ids,arr);
-            pthread_mutex_unlock(&lock1);
-        }
+            if(palitos<2){
+                if(pthread_mutex_trylock(&lock1)==0){
+                    b++;
+                    b1++;
+                    palitos++;
+                    //printf("usando b hilo: %ld   arr: %d \n",ids,arr);
+                    pthread_mutex_unlock(&lock1);
+                }
+            }
         }
         if(c==0){
-        if(pthread_mutex_trylock(&lock2)==0 && palitos<2){
-            c++;
-            c1++;
-            palitos++;
-            //printf("usando c hilo: %ld   arr: %d \n",ids,arr);
-            pthread_mutex_unlock(&lock2);
-        }
+            if(palitos<2){
+                if(pthread_mutex_trylock(&lock2)==0){
+                    c++;
+                    c1++;
+                    palitos++;
+                    //printf("usando c hilo: %ld   arr: %d \n",ids,arr);
+                    pthread_mutex_unlock(&lock2);
+                }
+            }
         }
         if(d==0){
-        if(pthread_mutex_trylock(&lock3)==0 && palitos<2){
-            d++;
-            d1++;
-            palitos++;
-            //printf("usando d hilo: %ld   arr: %d \n",ids,arr);
-            pthread_mutex_unlock(&lock3);
-        }
+            if(palitos<2){
+                if(pthread_mutex_trylock(&lock3)==0){
+                    d++;
+                    d1++;
+                    palitos++;
+                    //printf("usando d hilo: %ld   arr: %d \n",ids,arr);
+                    pthread_mutex_unlock(&lock3);
+                }
+            }
         }
         if(e==0){
-        if(pthread_mutex_trylock(&lock4)==0 && palitos<2){
-            e++;
-            e1++;
-            palitos++;
-            //printf("usando e hilo: %ld   arr: %d \n",ids,arr);
-            pthread_mutex_unlock(&lock4);
-        }
+            if(palitos<2){
+                if(pthread_mutex_trylock(&lock4)==0){
+                    e++;
+                    e1++;
+                    palitos++;
+                    //printf("usando e hilo: %ld   arr: %d \n",ids,arr);
+                    pthread_mutex_unlock(&lock4);
+                }
+            }
         }
         if(palitos==2){
             printf("Filosofo %ld esta comiendo\n",ids);
@@ -81,6 +92,7 @@ void* filosofo(void *id){
         e=e-e1;
         pthread_mutex_unlock(&lock5);
         palitos=0;
+
     }
 
 
@@ -115,7 +127,6 @@ int main(){
         return EXIT_FAILURE;
     }
 
-    pthread_t arreglo_hilos[NUM_HILOS];
     pthread_attr_t attr;
     pthread_attr_init(&attr);
     pthread_attr_setdetachstate(&attr,PTHREAD_CREATE_JOINABLE);
