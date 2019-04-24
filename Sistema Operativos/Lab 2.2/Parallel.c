@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <sys/time.h>
-int num_of_threads = 8;
-int row = 10000,col=10000;
+int num_of_threads = 2;
+int row = 1000,col=1000;
 int** A;
 int** B;
 int** C;
@@ -13,7 +13,7 @@ void *multiplicaction(void* id_arg){
   double rows_per_thr = col/num_of_threads;
   double start = id*rows_per_thr;
   double final = (id+1)*rows_per_thr;
-
+  //printf("hola\n");
   for(int i=start;i<final;i++){
    for(int j=0;j<col;j++){
     for(int k=0;k<row;k++){
@@ -59,7 +59,6 @@ int main(){
   gettimeofday(&start, 0);
   for (int rank = 0; rank < num_of_threads; rank++)
      pthread_create(&t[rank], NULL,multiplicaction , (void*)rank);
-
   for (int rank = 0; rank < num_of_threads; rank++)
       pthread_join(t[rank], NULL);
   gettimeofday(&finish, 0);
