@@ -6,7 +6,12 @@
 #include <sys/time.h>
 struct timeval start;
 struct timeval finish;
-pthread_mutex_t lock;
+pthread_mutex_t lock1 = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t lock2 = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t lock3 = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t lock4 = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t lock5 = PTHREAD_MUTEX_INITIALIZER;
+pthread_barrier_t barrier;
 pthread_t t[5];
 int unidades_de_makis[5]={20,20,20,20,20}; //El indice identifica al sabio y el array identifica el nro de makis restantes de cada sabio
 int estados[5]={0,0,0,0,0}; //El indice identifica al sabio y el array identifica el estado de cada sabio, si es 1 es porque esta comiendo, si es 0 es porque esta hablando
@@ -15,48 +20,49 @@ int palillo1=0,palillo2=0,palillo3=0,palillo4=0,palillo5=0; //Si es 0 el paillo 
 double promedio_tiempo=0; //Contador del tiempo de la cena
 void *cena(void* id_arg){
   int id=(int)id_arg;
+  pthread_barrier_wait(&barrier);
   if(unidades_de_makis[id]==0){
     pthread_exit(NULL);
   }
   if(palillo1!=1 && palillos_obtenido[id]<2){
-  if(pthread_mutex_trylock(&lock)==0){
+  if(pthread_mutex_trylock(&lock1)==0){
         palillo1+=1;
         palillos_obtenido[id]+=1;
         printf("Palillo 1 lo tiene el sabio %d \n",id+1);
 
-    pthread_mutex_unlock(&lock);
+    pthread_mutex_unlock(&lock1);
   }
 }
 if(palillo2!=1 && palillos_obtenido[id]<2){
-  if(pthread_mutex_trylock(&lock)==0){
+  if(pthread_mutex_trylock(&lock2)==0){
     palillo2+=1;
         palillos_obtenido[id]+=1;
         printf("Palillo 2 lo tiene el sabio %d \n",id+1);
-    pthread_mutex_unlock(&lock);
+    pthread_mutex_unlock(&lock2);
   }
 }
 if(palillo3!=1 && palillos_obtenido[id]<2){
-  if(pthread_mutex_trylock(&lock)==0){
+  if(pthread_mutex_trylock(&lock3)==0){
     palillo3+=1;
         palillos_obtenido[id]+=1;
         printf("Palillo 3 lo tiene el sabio %d \n",id+1);
     }
-    pthread_mutex_unlock(&lock);
+    pthread_mutex_unlock(&lock3);
   }
 if(palillo4!=1 && palillos_obtenido[id]<2){
-  if(pthread_mutex_trylock(&lock)==0){
+  if(pthread_mutex_trylock(&lock4)==0){
     palillo4+=1;
         palillos_obtenido[id]+=1;
         printf("Palillo 4 lo tiene el sabio %d \n",id+1);
-    pthread_mutex_unlock(&lock);
+    pthread_mutex_unlock(&lock4);
 }
 }
 if(palillo5!=1 && palillos_obtenido[id]<2){
-  if(pthread_mutex_trylock(&lock)==0){
+  if(pthread_mutex_trylock(&lock5)==0){
     palillo5+=1;
         palillos_obtenido[id]+=1;
         printf("Palillo 5 lo tiene el sabio %d \n",id+1);
-    pthread_mutex_unlock(&lock);
+    pthread_mutex_unlock(&lock5);
   }
 }
   if(palillos_obtenido[id]==2){
@@ -67,13 +73,9 @@ if(palillo5!=1 && palillos_obtenido[id]<2){
 }
 int main(){
   gettimeofday(&start, 0);
-  if (pthread_mutex_init(&lock, NULL) != 0)
-    {
-        printf("\n mutex init has failed\n");
-        return 1;
-    }
   for (int i = 0; i < 20; i++) {
   while(unidades_de_makis[0]!=0 || unidades_de_makis[1]!=0 || unidades_de_makis[2]!=0 || unidades_de_makis[3]!=0 || unidades_de_makis[4]!=0){
+    pthread_barrier_init(&barrier,NULL,5);
     for (int rank = 0; rank < 5; rank++)
        pthread_create(&t[rank], NULL,cena ,(void*)rank);
     for (int rank = 0; rank < 5; rank++)
@@ -98,6 +100,7 @@ int main(){
     palillo3=0;
     palillo4=0;
     palillo5=0;
+    pthread_barrier_destroy(&barrier);
   }
   printf("Fin de la cena %d\n", i+1);
   printf("--------------------------------------------------------------------------------\n");
