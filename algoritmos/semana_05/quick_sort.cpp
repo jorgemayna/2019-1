@@ -1,4 +1,5 @@
 #include<iostream>
+#include <sys/time.h>
 using namespace std;
 void swap(int* a, int* b) {
     int t = *a;
@@ -48,7 +49,19 @@ int main(){
     for(int i=0;i<N;i++){
 	 cin>>arr[i];
     }
-    tail_quickSort(arr,0,N-1);
-    print_a(arr,N);
+
+    timeval start;
+    timeval finish;
+    long int compTime;
+    double Time;
+    gettimeofday(&start,0);
+    quickSort(arr,0,N-1);
+    gettimeofday(&finish, 0);
+    compTime = (finish.tv_sec - start.tv_sec) * 1000000;
+    compTime = compTime + (finish.tv_usec - start.tv_usec);
+    Time = (double)compTime;
+
+    cout<<"TIempo: "<<Time/1000000<<endl;
+
     return 0;
 }

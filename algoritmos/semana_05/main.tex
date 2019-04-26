@@ -1,0 +1,110 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{color}
+\usepackage{listings}
+\usepackage{graphicx}
+\lstset{
+language=C++,
+basicstyle=\footnotesize,
+numbers=left,
+numberstyle=\footnotesize,
+stepnumber=1,
+numbersep=5pt,
+backgroundcolor=\color{white},
+showspaces=false,
+showstringspaces=false,
+showtabs=false,
+frame=single,
+tabsize=2,
+captionpos=b,
+breaklines=true,
+breakatwhitespace=false,
+escapeinside={\%*}{*)}
+}
+
+\title{\textbf{ANALISIS Y DISEÑO DE ALGORITMOS}}
+\author{\textbf{Jorge Alfredo Mayna Flores} \\
+Universidad de Ingeniería y Tecnología}
+
+\date{abril, 2019}
+
+\begin{document}
+
+\maketitle
+\section{Ejercicio 1}
+\subsection{}
+\subsection{}
+Trabajar con algoritmos recursivos tiene varias ventajas y pueden hacer que el tiempo de ejecución de tu programa disminuya. Sin embargo, el llamar recursivamente a tus funciones puede causar que el consumo de memoria sea mayor. Las funciones se crean una y otra ves al igual que las variables a ser usadas y no se eliminan hasta que las etapas recursivas terminan.  
+\subsection{}
+Una función "tail recursion" es  cuando la llamada recursiva se hace al final de la función. Es mejor que una función que no lo sea porque el compilador puede optimizarla de mejora manera. Al ser lo ultimo en ejecutarse en la función el compilador considera innecesario guardar el stack de la función actual.\\
+\begin{itemize}
+    \item Quicksort tail recursion
+\end{itemize}
+\begin{lstlisting}
+void tail_quickSort(int* arr, int l, int h) {
+    while (l < h){
+        int pivot = partition(arr, l, h);
+        quickSort(arr, l, pivot-1);
+        l=pivot+1;
+    }
+}
+\end{lstlisting}\\
+Para comparar el quicksort y su mejora se uso el archivo de 100 000 números proporcionado para la siguiente parte de la practica. Se obtuvo los siguientes resultados:\\
+Quicksort: 0.023226\\
+tail\_Quicksort:0.022589\\
+Al final se pudo comprobar que los cambios que se le hicieron si mejoraron el tiempo de ejecución del algoritmo.
+
+
+\subsection{}
+Una forma para hacer que el quick sort corra en paralelo y se pueda adaptar a la cantidad de threads que elijas puede ser dividir tu array en NUMTHREADS(numero de threads con los que se quiere trabajar) y correr todos los threads, el resulado seria NUMTHREADS arrays ordenados. Una vez echo esto se podria juntar los pedasos de array ya ordenados con la logica del merge sort.Incluso los podrias ir juntando agarrando en grupos de 2 y cada grupo ejecutarse en un thread.
+
+\section{Ejercicio 2}
+Para el ejercicio 2 se evaluó los tiempos de ejecución de los algoritmos flip-sort de forma recursiva(divide and conquer) y el insertion sort. Se les paso por entrada el archivo con los 100 000 numeros y se conto la cantidad de flips que hacian.\\
+\begin{itemize}
+    \item Flip-sort
+\end{itemize}
+\begin{lstlisting}
+\begin{lstlisting}
+void merge_flip(int* ar,int l,int m,int r){
+    for(int i=m+1;i<=r;i++){
+        int j=i-1,key=ar[i];
+        while(ar[j]>key && j>=l){
+            flip(ar,j);
+
+            j--;
+        }
+    }
+}
+void flip_sort(int* ar,int l,int r){
+    if(r>l){
+        int m=(r+l)/2;
+        flip_sort(ar,l,m);
+        flip_sort(ar,m+1,r);
+        merge_flip(ar,l,m,r);
+
+    }
+}
+
+\end{lstlisting}\\
+Para el flip-sort se obtuvo 2407905288 intercambios y el tiempo de ejecución fue de 24.3688 segundos. Este algoritmos aunque sea divide and conquer no es muy rápido ya que solo cambia con los adyacentes.
+\begin{itemize}
+    \item Insertion sort
+\end{itemize}
+\begin{lstlisting}
+for(int x=0;x<100000;x++){
+	for(int y=x;y>0;y--){
+		if(arr[y-1]>arr[y]){
+			temp=arr[y];
+			arr[y]=arr[y-1];
+			arr[y-1]=temp;
+			cont++;
+		}
+	}
+}
+\end{lstlisting}\\
+Para el insertion sort se obtuvo 2407905288 intercambios y el tiempo de ejecución fue de 18.991 segundos.
+
+\section{Ejercicio 3}
+Como el flip sort cumple con lo que pide el problema se intento usarlo para resolverlo.Sin embargo es muy lento y supero el tiempo máximo permitido.
+
+\end{document}
