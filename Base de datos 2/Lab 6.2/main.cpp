@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdio.h>
 #include <fstream>
 #include <string.h>
 #include <vector>
@@ -66,6 +67,7 @@ void Solicitar_Datos(Aula* o_aula){
 int main() {
   fstream file("stopwords.txt");
   string data;
+  string subdata;
   while (!file.eof()) {
     file >> data;
     Stopwords.push_back(data);
@@ -74,6 +76,12 @@ int main() {
   fstream libro1("libros/libro1.txt");
   while (!libro1.eof()) {
     libro1 >> data;
+    if(data[data.length()-1] == '.' || data[data.length()-1] == ',' || data[data.length()-1] == ')'){
+        data= data.substr(0,data.length()-1);
+    }
+    if(data[0] == '('){
+        data= data.substr(1);
+    }
     if (it == Stopwords.end()) {
       if (validar_terminos.count(data) == 0) {
         validar_terminos[data] = 1;
@@ -87,6 +95,12 @@ int main() {
   fstream libro2("libros/libro2.txt");
   while (!libro2.eof()) {
     libro2 >> data;
+    if(data[data.length()-1] == '.' || data[data.length()-1] == ',' || data[data.length()-1] == ')'){
+        data= data.substr(0,data.length()-1);
+    }
+    if(data[0] == '('){
+        data= data.substr(1);
+    }
     it = find(Stopwords.begin(), Stopwords.end(), data);
     if (it == Stopwords.end()) {
       if (validar_terminos.count(data) == 0) {
@@ -101,6 +115,12 @@ int main() {
   fstream libro3("libros/libro3.txt");
   while (!libro3.eof()) {
     libro3 >> data;
+    if(data[data.length()-1] == '.' || data[data.length()-1] == ',' || data[data.length()-1] == ')'){
+        data= data.substr(0,data.length()-1);
+    }
+    if(data[0] == '('){
+        data= data.substr(1);
+    }
     it = find(Stopwords.begin(), Stopwords.end(), data);
     if (it == Stopwords.end()) {
       if (validar_terminos.count(data) == 0) {
@@ -115,6 +135,12 @@ int main() {
   fstream libro4("libros/libro4.txt");
   while (!libro4.eof()) {
     libro4 >> data;
+    if(data[data.length()-1] == '.' || data[data.length()-1] == ',' || data[data.length()-1] == ')'){
+        data= data.substr(0,data.length()-1);
+    }
+    if(data[0] == '('){
+        data= data.substr(1);
+    }
     it = find(Stopwords.begin(), Stopwords.end(), data);
     if (it == Stopwords.end()) {
       if (validar_terminos.count(data) == 0) {
@@ -129,6 +155,12 @@ int main() {
   fstream libro5("libros/libro5.txt");
   while (!libro5.eof()) {
     libro5 >> data;
+    if(data[data.length()-1] == '.' || data[data.length()-1] == ',' || data[data.length()-1] == ')'){
+        data= data.substr(0,data.length()-1);
+    }
+    if(data[0] == '('){
+        data= data.substr(1);
+    }
     it = find(Stopwords.begin(), Stopwords.end(), data);
     if (it == Stopwords.end()) {
       if (validar_terminos.count(data) == 0) {
@@ -143,6 +175,12 @@ int main() {
   fstream libro6("libros/libro6.txt");
   while (!libro6.eof()) {
     libro6 >> data;
+    if(data[data.length()-1] == '.' || data[data.length()-1] == ',' || data[data.length()-1] == ')'){
+        data= data.substr(0,data.length()-1);
+    }
+    if(data[0] == '('){
+        data= data.substr(1);
+    }
     it = find(Stopwords.begin(), Stopwords.end(), data);
     if (it == Stopwords.end()) {
       if (validar_terminos.count(data) == 0) {
