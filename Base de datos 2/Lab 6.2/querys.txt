@@ -1,0 +1,3 @@
+ARAGORN and SAM and_not MORDOR 0
+MORDOR or_not LEGOLAS and HOBBIT or SAM 0
+0
