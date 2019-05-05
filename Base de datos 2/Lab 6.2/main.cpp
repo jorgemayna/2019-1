@@ -17,7 +17,7 @@ void calcular_concurrencia(string filename, int nro_libro) {
   fstream libro(filename);
   while (!libro.eof()) {
     libro >> data;
-    transform(data.begin(), data.end(),data.begin(), ::toupper);
+    transform(data.begin(), data.end(), data.begin(), ::toupper);
     if (data[data.length() - 1] == '.' || data[data.length() - 1] == ',' || data[data.length() - 1] == ')') {
       data = data.substr(0, data.length() - 1);
     }
@@ -205,17 +205,17 @@ void consulta_booleana() {
     cout << endl << endl;
   }
 }
-void Guardar_Indice_Invertido(){
+void Guardar_Indice_Invertido() {
   ofstream fichero("Indice_Invertido.txt");
   string aux = "";
   for (std::multimap<string, int>::iterator it = terminos_frecuentes.begin(); it != terminos_frecuentes.end(); ++it) {
     if (aux == (*it).first) {
       fichero << " " << (*it).second;
     } else {
-      if(aux != ""){
+      if (aux != "") {
         fichero << endl;
       }
-      fichero <<  (*it).first << " => Aparece en los libros: " << (*it).second;
+      fichero << (*it).first << " => Aparece en los libros: " << (*it).second;
     }
     aux = (*it).first;
   }
@@ -234,10 +234,10 @@ int main() {
   calcular_concurrencia("libros/libro4.txt", 4);
   calcular_concurrencia("libros/libro5.txt", 5);
   calcular_concurrencia("libros/libro6.txt", 6);
-  Guardar_Indice_Invertido();
+  //Guardar_Indice_Invertido();
   /////////////////////////////////////////////////
   //Nota para el profesor: Descomentar para su uso
   //calcular_50_primeros();
   //imprimir_concurrencia();
-  //consulta_booleana();
+  consulta_booleana(); // Compilador: output < querys.text
 }
