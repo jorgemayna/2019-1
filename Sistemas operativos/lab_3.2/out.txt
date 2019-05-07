@@ -1,0 +1,79 @@
+Con 2 threads:
+
+Sin block 
+Cuenta: 50000 
+Tiempo: 0.000781 
+
+Con mutex 
+Cuenta: 100000 
+Tiempo: 0.008447 
+
+Con TAS 
+Cuenta: 100000 
+Tiempo: 0.002399 
+
+Con TATAS 
+Cuenta: 100000 
+Tiempo: 0.000774 
+
+Con TATAS con backlog 
+Cuenta: 100000 
+Tiempo: 0.006457 
+
+Con Ticket 
+Cuenta: 100000 
+Tiempo: 0.007296 
+
+
+Con 4 threads:
+
+Sin block 
+Cuenta: 62915 
+Tiempo: 0.001887 
+
+Con mutex 
+Cuenta: 200000 
+Tiempo: 0.015955 
+
+Con TAS 
+Cuenta: 200000 
+Tiempo: 0.009152 
+
+Con TATAS 
+Cuenta: 200000 
+Tiempo: 0.001793 
+
+Con TATAS con backlog 
+Cuenta: 200000 
+Tiempo: 0.016171 
+
+Con Ticket 
+Cuenta: 200000 
+Tiempo: 0.017784 
+
+
+Con 8 threads:
+
+Sin block 
+Cuenta: 108303 
+Tiempo: 0.002794 
+
+Con mutex 
+Cuenta: 400000 
+Tiempo: 0.036533 
+
+Con TAS 
+Cuenta: 400000 
+Tiempo: 0.042911 
+
+Con TATAS 
+Cuenta: 400000 
+Tiempo: 0.028630 
+
+Con TATAS con backlog 
+Cuenta: 400000 
+Tiempo: 0.032190 
+
+Con Ticket 
+Cuenta: 400000 
+Tiempo: 0.034971 
